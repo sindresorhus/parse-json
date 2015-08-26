@@ -8,7 +8,16 @@ test(function (t) {
 
 	assert.throws(function () {
 		fn('{\n\t"foo": true,\n}');
-	}, /SyntaxError: Trailing/);
+	}, /JSONError: Trailing/);
+
+	assert.throws(function () {
+		try {
+			fn('{\n\t"foo": true,\n}');
+		} catch (err) {
+			err.fileName = 'foo.json';
+			throw err;
+		}
+	}, /JSONError: Trailing.*in foo\.json/);
 
 	t.end();
 });

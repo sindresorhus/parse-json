@@ -31,6 +31,9 @@
     "string",
     "str"
   ],
+  "dependencies": {
+    "error-ex": "^1.1.0"
+  },
   "devDependencies": {
     "ava": "0.0.4",
     "xo": "*"
