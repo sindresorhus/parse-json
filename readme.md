@@ -26,7 +26,20 @@ SyntaxError: Unexpected token }
 
 parseJson(json);
 /*
-SyntaxError: Trailing comma in object at 3:1
+JSONError: Trailing comma in object at 3:1
+}
+^
+*/
+
+try {
+	parseJson(json);
+} catch (err) {
+	err.fileName = 'foo.json';
+	throw err;
+}
+
+/*
+JSONError: Trailing comma in object at 3:1 in foo.json
 }
 ^
 */
