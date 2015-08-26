@@ -32,7 +32,7 @@
     "str"
   ],
   "dependencies": {
-    "error-ex": "^1.1.0"
+    "error-ex": "^1.2.0"
   },
   "devDependencies": {
     "ava": "0.0.4",

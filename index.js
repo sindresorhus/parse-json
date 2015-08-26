@@ -19,7 +19,6 @@ module.exports = function (x, reviver) {
 			throw err;
 		}
 	} catch (err) {
-		JSONError.call(err);
-		throw err;
+		throw new JSONError(err);
 	}
 };
