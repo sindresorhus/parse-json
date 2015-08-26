@@ -16,32 +16,42 @@ $ npm install --save parse-json
 var parseJson = require('parse-json');
 var json = '{\n\t"foo": true,\n}';
 
-JSON.parse(json);
-/*
-undefined:3
+try {
+	JSON.parse(json);
+} catch (err) {
+	console.log(err)
+	/*
+	undefined:3
+	}
+	^
+	SyntaxError: Unexpected token }
+	*/
 }
-^
-SyntaxError: Unexpected token }
-*/
 
-parseJson(json);
-/*
-JSONError: Trailing comma in object at 3:1
+try {
+	parseJson(json);
+} catch (err) {
+	console.log(err)
+	/*
+	JSONError: Trailing comma in object at 3:1
+	}
+	^
+	*/
 }
-^
-*/
+
 
 try {
 	parseJson(json);
 } catch (err) {
 	err.fileName = 'foo.json';
-	throw err;
+	console.log(err)
+	/*
+	JSONError: Trailing comma in object at 3:1 in foo.json
+	}
+	^
+	*/
 }
-/*
-JSONError: Trailing comma in object at 3:1 in foo.json
-}
-^
-*/
+
 ```
 
 ## API
