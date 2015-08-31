@@ -6,7 +6,12 @@ var JSONError = errorEx('JSONError', {
 	fileName: errorEx.append('in %s')
 });
 
-module.exports = function (x, reviver) {
+module.exports = function (x, reviver, filename) {
+	if (typeof reviver === 'string') {
+		filename = reviver;
+		reviver = null;
+	}
+
 	try {
 		try {
 			return JSON.parse(x, reviver);
@@ -19,6 +24,12 @@ module.exports = function (x, reviver) {
 			throw err;
 		}
 	} catch (err) {
-		throw new JSONError(err);
+		var jsonErr = new JSONError(err);
+
+		if (filename) {
+			jsonErr.fileName = filename;
+		}
+
+		throw jsonErr;
 	}
 };
