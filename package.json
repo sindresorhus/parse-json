@@ -37,10 +37,5 @@
   "devDependencies": {
     "ava": "0.0.4",
     "xo": "*"
-  },
-  "xo": {
-    "ignores": [
-      "vendor/**"
-    ]
   }
 }
