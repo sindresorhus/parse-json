@@ -1,17 +1,16 @@
-'use strict';
-var assert = require('assert');
-var test = require('ava');
-var fn = require('./');
-var reJsonErr = /JSONError: Trailing.*in foo\.json/;
+import test from 'ava';
+import fn from './';
 
-test(function (t) {
-	t.assert(fn('{"foo": true}'));
+const reJsonErr = /JSONError: Trailing.*in foo\.json/;
 
-	assert.throws(function () {
+test(t => {
+	t.ok(fn('{"foo": true}'));
+
+	t.throws(() => {
 		fn('{\n\t"foo": true,\n}');
 	}, /JSONError: Trailing/);
 
-	assert.throws(function () {
+	t.throws(() => {
 		try {
 			fn('{\n\t"foo": true,\n}');
 		} catch (err) {
@@ -20,11 +19,11 @@ test(function (t) {
 		}
 	}, reJsonErr);
 
-	assert.throws(function () {
+	t.throws(() => {
 		fn('{\n\t"foo": true,\n}', 'foo.json');
 	}, reJsonErr);
 
-	assert.throws(function () {
+	t.throws(() => {
 		try {
 			fn('{\n\t"foo": true,\n}', 'bar.json');
 		} catch (err) {
@@ -32,6 +31,4 @@ test(function (t) {
 			throw err;
 		}
 	}, reJsonErr);
-
-	t.end();
 });
