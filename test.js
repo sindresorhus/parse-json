@@ -4,7 +4,7 @@ import fn from './';
 const reJsonErr = /JSONError: Trailing.*in foo\.json/;
 
 test(t => {
-	t.ok(fn('{"foo": true}'));
+	t.truthy(fn('{"foo": true}'));
 
 	t.throws(() => {
 		fn('{\n\t"foo": true,\n}');
