@@ -13,8 +13,8 @@ $ npm install --save parse-json
 ## Usage
 
 ```js
-var parseJson = require('parse-json');
-var json = '{\n\t"foo": true,\n}';
+const parseJson = require('parse-json');
+const json = '{\n\t"foo": true,\n}';
 
 
 JSON.parse(json);
@@ -66,7 +66,7 @@ Type: `string`
 
 #### reviver
 
-Type: `function`
+Type: `Function`
 
 Prescribes how the value originally produced by parsing is transformed, before being returned. See [`JSON.parse` docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse#Using_the_reviver_parameter
 ) for more.
@@ -80,4 +80,4 @@ Filename displayed in the error message.
 
 ## License
 
-MIT © [Sindre Sorhus](http://sindresorhus.com)
+MIT © [Sindre Sorhus](https://sindresorhus.com)
