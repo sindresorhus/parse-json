@@ -1,18 +1,18 @@
 import test from 'ava';
-import fn from './';
+import m from '.';
 
 const reJsonErr = /JSONError: Trailing.*in foo\.json/;
 
 test(t => {
-	t.truthy(fn('{"foo": true}'));
+	t.truthy(m('{"foo": true}'));
 
 	t.throws(() => {
-		fn('{\n\t"foo": true,\n}');
+		m('{\n\t"foo": true,\n}');
 	}, /JSONError: Trailing/);
 
 	t.throws(() => {
 		try {
-			fn('{\n\t"foo": true,\n}');
+			m('{\n\t"foo": true,\n}');
 		} catch (err) {
 			err.fileName = 'foo.json';
 			throw err;
@@ -20,12 +20,12 @@ test(t => {
 	}, reJsonErr);
 
 	t.throws(() => {
-		fn('{\n\t"foo": true,\n}', 'foo.json');
+		m('{\n\t"foo": true,\n}', 'foo.json');
 	}, reJsonErr);
 
 	t.throws(() => {
 		try {
-			fn('{\n\t"foo": true,\n}', 'bar.json');
+			m('{\n\t"foo": true,\n}', 'bar.json');
 		} catch (err) {
 			err.fileName = 'foo.json';
 			throw err;
