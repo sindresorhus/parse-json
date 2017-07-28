@@ -1,7 +1,7 @@
 import test from 'ava';
 import m from '.';
 
-const reJsonErr = /JSONError: Trailing.*in foo\.json/;
+const reJsonErr = /JSONError: Trailing.* at 3:1 in foo\.json:3:1/;
 
 test(t => {
 	t.truthy(m('{"foo": true}'));
@@ -15,6 +15,7 @@ test(t => {
 			m('{\n\t"foo": true,\n}');
 		} catch (err) {
 			err.fileName = 'foo.json';
+			err.appendPosition = true;
 			throw err;
 		}
 	}, reJsonErr);
