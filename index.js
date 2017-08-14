@@ -12,8 +12,10 @@ const JSONError = errorEx('JSONError', {
 	fileName: errorEx.append('in %s'),
 	appendPosition: {
 		message: (shouldAppend, original) => {
-			const originalMessage = original[0];
-			return shouldAppend ? appendPosition(originalMessage) : originalMessage;
+			if (shouldAppend) {
+				original[0] = appendPosition(original[0]);
+			}
+			return original;
 		}
 	}
 });
