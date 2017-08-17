@@ -4,7 +4,7 @@ const fallback = require('./vendor/parse');
 
 function appendPosition(message) {
 	const posRe = / at (\d+:\d+) in/;
-	const numbers = message.match(posRe);
+	const numbers = posRe.exec(message);
 	return message.replace(posRe, ' in') + ':' + numbers[1];
 }
 

@@ -6,7 +6,7 @@
 ## Install
 
 ```
-$ npm install --save parse-json
+$ npm install parse-json
 ```
 
 
@@ -36,13 +36,13 @@ JSONError: Trailing comma in object at 3:1
 
 parseJson(json, 'foo.json');
 /*
-JSONError: Trailing comma in object at 3:1 in foo.json
+JSONError: Trailing comma in object in foo.json:3:1
 }
 ^
 */
 
 
-// you can also add the filename at a later point
+// You can also add the filename at a later point
 try {
 	parseJson(json);
 } catch (err) {
@@ -50,7 +50,7 @@ try {
 	throw err;
 }
 /*
-JSONError: Trailing comma in object at 3:1 in foo.json
+JSONError: Trailing comma in object in foo.json:3:1
 }
 ^
 */
