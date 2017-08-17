@@ -1,7 +1,7 @@
 import test from 'ava';
 import m from '.';
 
-const reJsonErr = /JSONError: Trailing.*in foo\.json/;
+const reJsonErr = /JSONError: Trailing.*in foo\.json(:\d+:\d+)?/;
 
 test(t => {
 	t.truthy(m('{"foo": true}'));
