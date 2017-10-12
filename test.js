@@ -1,7 +1,7 @@
 import test from 'ava';
 import m from '.';
 
-const reJsonErr = /JSONError: Unexpected token } in JSON at position.*in foo\.json?/;
+const reJsonErr = /JSONError: Unexpected token }.*in foo\.json?/;
 
 test(t => {
 	t.truthy(m('{"foo": true}'));
