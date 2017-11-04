@@ -1,23 +1,9 @@
 'use strict';
 const errorEx = require('error-ex');
-const fallback = require('./vendor/parse');
-
-function appendPosition(message) {
-	const posRe = / at (\d+:\d+) in/;
-	const numbers = posRe.exec(message);
-	return message.replace(posRe, ' in') + ':' + numbers[1];
-}
+const fallback = require('json-parse-better-errors');
 
 const JSONError = errorEx('JSONError', {
-	fileName: errorEx.append('in %s'),
-	appendPosition: {
-		message: (shouldAppend, original) => {
-			if (shouldAppend) {
-				original[0] = appendPosition(original[0]);
-			}
-			return original;
-		}
-	}
+	fileName: errorEx.append('in %s')
 });
 
 module.exports = (input, reviver, filename) => {
@@ -30,19 +16,16 @@ module.exports = (input, reviver, filename) => {
 		try {
 			return JSON.parse(input, reviver);
 		} catch (err) {
-			fallback.parse(input, {
-				mode: 'json',
-				reviver
-			});
+			fallback(input, reviver);
 
 			throw err;
 		}
 	} catch (err) {
-		const jsonErr = new JSONError(err);
+		err.message = err.message.replace(/\n/g, '');
 
+		const jsonErr = new JSONError(err);
 		if (filename) {
 			jsonErr.fileName = filename;
-			jsonErr.appendPosition = true;
 		}
 
 		throw jsonErr;

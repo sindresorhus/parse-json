@@ -1,14 +1,14 @@
 import test from 'ava';
 import m from '.';
 
-const reJsonErr = /JSONError: Trailing.*in foo\.json(:\d+:\d+)?/;
+const reJsonErr = /JSONError: Unexpected token }.*in foo\.json?/;
 
 test(t => {
 	t.truthy(m('{"foo": true}'));
 
 	t.throws(() => {
 		m('{\n\t"foo": true,\n}');
-	}, /JSONError: Trailing/);
+	}, /JSONError: Unexpected token }/);
 
 	t.throws(() => {
 		try {
