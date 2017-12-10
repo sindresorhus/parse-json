@@ -28,17 +28,13 @@ SyntaxError: Unexpected token }
 
 parseJson(json);
 /*
-JSONError: Trailing comma in object at 3:1
-}
-^
+JSONError: Unexpected token } in JSON at position 16 while parsing near '{      "foo": true,}'
 */
 
 
 parseJson(json, 'foo.json');
 /*
-JSONError: Trailing comma in object in foo.json:3:1
-}
-^
+JSONError: Unexpected token } in JSON at position 16 while parsing near '{      "foo": true,}' in foo.json
 */
 
 
@@ -50,9 +46,7 @@ try {
 	throw err;
 }
 /*
-JSONError: Trailing comma in object in foo.json:3:1
-}
-^
+JSONError: Unexpected token } in JSON at position 16 while parsing near '{      "foo": true,}' in foo.json
 */
 ```
 
