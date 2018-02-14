@@ -16,6 +16,13 @@ module.exports = (input, reviver, filename) => {
 		try {
 			return JSON.parse(input, reviver);
 		} catch (err) {
+			if (typeof input === 'undefined') {
+				throw new TypeError('Cannot parse undefined');
+			}
+			if (Number.isNaN(input)) {
+				throw new TypeError('Cannot parse NaN');
+			}
+
 			fallback(input, reviver);
 
 			throw err;
