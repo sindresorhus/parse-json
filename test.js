@@ -33,10 +33,10 @@ test(t => {
 	}, reJsonErr);
 
 	t.throws(() => {
-		m(undefined)
-	}, /^JSONError: Cannot parse undefined$/)
+		m(undefined);
+	}, /^JSONError: Cannot parse undefined$/);
 
 	t.throws(() => {
-		m(NaN)
-	}, /^JSONError: Cannot parse NaN$/)
+		m(NaN);
+	}, /^JSONError: Cannot parse NaN$/);
 });
