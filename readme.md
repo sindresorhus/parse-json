@@ -14,6 +14,7 @@ $ npm install parse-json
 
 ```js
 const parseJson = require('parse-json');
+
 const json = '{\n\t"foo": true,\n}';
 
 
@@ -52,9 +53,9 @@ JSONError: Unexpected token } in JSON at position 16 while parsing near '{      
 
 ## API
 
-### parseJson(input, [reviver], [filename])
+### parseJson(string, reviver?, filename?)
 
-#### input
+#### string
 
 Type: `string`
 
@@ -70,8 +71,3 @@ Prescribes how the value originally produced by parsing is transformed, before b
 Type: `string`
 
 Filename displayed in the error message.
-
-
-## License
-
-MIT © [Sindre Sorhus](https://sindresorhus.com)

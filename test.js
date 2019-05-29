@@ -1,34 +1,37 @@
 import test from 'ava';
-import m from '.';
+import parseJson from '.';
 
-const reJsonErr = /JSONError: Unexpected token }.*in foo\.json?/;
+const jsonErrorRegex = /Unexpected token }.*in foo\.json?/;
 
-test(t => {
-	t.truthy(m('{"foo": true}'));
-
-	t.throws(() => {
-		m('{\n\t"foo": true,\n}');
-	}, /JSONError: Unexpected token }/);
+test('main', t => {
+	t.truthy(parseJson('{"foo": true}'));
 
 	t.throws(() => {
-		try {
-			m('{\n\t"foo": true,\n}');
-		} catch (err) {
-			err.fileName = 'foo.json';
-			throw err;
-		}
-	}, reJsonErr);
-
-	t.throws(() => {
-		m('{\n\t"foo": true,\n}', 'foo.json');
-	}, reJsonErr);
+		parseJson('{\n\t"foo": true,\n}');
+	}, {
+		name: 'JSONError',
+		message: /Unexpected token }/
+	});
 
 	t.throws(() => {
 		try {
-			m('{\n\t"foo": true,\n}', 'bar.json');
-		} catch (err) {
-			err.fileName = 'foo.json';
-			throw err;
+			parseJson('{\n\t"foo": true,\n}');
+		} catch (error) {
+			error.fileName = 'foo.json';
+			throw error;
 		}
-	}, reJsonErr);
+	}, jsonErrorRegex);
+
+	t.throws(() => {
+		parseJson('{\n\t"foo": true,\n}', 'foo.json');
+	}, jsonErrorRegex);
+
+	t.throws(() => {
+		try {
+			parseJson('{\n\t"foo": true,\n}', 'bar.json');
+		} catch (error) {
+			error.fileName = 'foo.json';
+			throw error;
+		}
+	}, jsonErrorRegex);
 });

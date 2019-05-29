@@ -6,7 +6,7 @@ const JSONError = errorEx('JSONError', {
 	fileName: errorEx.append('in %s')
 });
 
-module.exports = (input, reviver, filename) => {
+module.exports = (string, reviver, filename) => {
 	if (typeof reviver === 'string') {
 		filename = reviver;
 		reviver = null;
@@ -14,20 +14,19 @@ module.exports = (input, reviver, filename) => {
 
 	try {
 		try {
-			return JSON.parse(input, reviver);
-		} catch (err) {
-			fallback(input, reviver);
-
-			throw err;
+			return JSON.parse(string, reviver);
+		} catch (error) {
+			fallback(string, reviver);
+			throw error;
 		}
-	} catch (err) {
-		err.message = err.message.replace(/\n/g, '');
+	} catch (error) {
+		error.message = error.message.replace(/\n/g, '');
 
-		const jsonErr = new JSONError(err);
+		const jsonError = new JSONError(error);
 		if (filename) {
-			jsonErr.fileName = filename;
+			jsonError.fileName = filename;
 		}
 
-		throw jsonErr;
+		throw jsonError;
 	}
 };
