@@ -42,9 +42,9 @@ JSONError: Unexpected token } in JSON at position 16 while parsing near '{      
 // You can also add the filename at a later point
 try {
 	parseJson(json);
-} catch (err) {
-	err.fileName = 'foo.json';
-	throw err;
+} catch (error) {
+	error.fileName = 'foo.json';
+	throw error;
 }
 /*
 JSONError: Unexpected token } in JSON at position 16 while parsing near '{      "foo": true,}' in foo.json
@@ -71,3 +71,16 @@ Prescribes how the value originally produced by parsing is transformed, before b
 Type: `string`
 
 Filename displayed in the error message.
+
+
+---
+
+<div align="center">
+	<b>
+		<a href="https://tidelift.com/subscription/pkg/npm-parse-json?utm_source=npm-parse-json&utm_medium=referral&utm_campaign=readme">Get professional support for this package with a Tidelift subscription</a>
+	</b>
+	<br>
+	<sub>
+		Tidelift helps make open source sustainable for maintainers while giving companies<br>assurances about security, maintenance, and licensing for their dependencies.
+	</sub>
+</div>
