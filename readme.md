@@ -30,12 +30,22 @@ SyntaxError: Unexpected token }
 parseJson(json);
 /*
 JSONError: Unexpected token } in JSON at position 16 while parsing near '{      "foo": true,}'
+
+  1 | {
+  2 |   "foo": true,
+> 3 | }
+    | ^
 */
 
 
 parseJson(json, 'foo.json');
 /*
 JSONError: Unexpected token } in JSON at position 16 while parsing near '{      "foo": true,}' in foo.json
+
+  1 | {
+  2 |   "foo": true,
+> 3 | }
+    | ^
 */
 
 
@@ -48,6 +58,11 @@ try {
 }
 /*
 JSONError: Unexpected token } in JSON at position 16 while parsing near '{      "foo": true,}' in foo.json
+
+  1 | {
+  2 |   "foo": true,
+> 3 | }
+    | ^
 */
 ```
 
