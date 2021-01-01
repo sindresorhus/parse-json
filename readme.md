@@ -1,4 +1,4 @@
-# parse-json [![Build Status](https://travis-ci.com/sindresorhus/parse-json.svg?branch=master)](https://travis-ci.com/github/sindresorhus/parse-json)
+# parse-json
 
 > Parse JSON with more helpful errors
 
