@@ -50,4 +50,5 @@ const parseJson = (string, reviver, filename) => {
 };
 
 parseJson.JSONError = JSONError;
+
 module.exports = parseJson;

@@ -51,9 +51,10 @@ JSONError: Unexpected token } in JSON at position 16 while parsing near '{      
 try {
 	parseJson(json);
 } catch (error) {
-	if(error instanceof parseJson.JSONError) {
+	if (error instanceof parseJson.JSONError) {
 		error.fileName = 'foo.json';
 	}
+
 	throw error;
 }
 /*
@@ -69,6 +70,8 @@ JSONError: Unexpected token } in JSON at position 16 while parsing near '{      
 ## API
 
 ### parseJson(string, reviver?, filename?)
+
+Throws a `JSONError` when there is a parsing error.
 
 #### string
 
@@ -87,34 +90,21 @@ Type: `string`
 
 Filename displayed in the error message.
 
-#### throws
+### parseJson.JSONError
 
-Type: `JSONError`
-
-Thrown when there is a parsing error and contains displayable information like the codeFrame, and fileName
-
-
-### class JSONError(error: unknown)
-
-#### error (argument)
-
-Type: `unknown`
-
-This is any raised error that the `JSONError` has wrapped
-
-#### Fields
-#### codeFrame
-
-Type: `string`
-
-The printable section of the JSON which produces the error.
+Exposed for `instanceof` checking.
 
 #### fileName
 
 Type: `string`
 
-Filename displayed in the error message.
+The filename displayed in the error message.
 
+#### codeFrame
+
+Type: `string`
+
+The printable section of the JSON which produces the error.
 
 ---
 

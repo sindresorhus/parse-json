@@ -37,6 +37,9 @@ test('main', t => {
 });
 
 test('throws exported error error', t => {
-	const error = t.throws(() => parseJson('asdf'));
-	t.truthy(error instanceof parseJson.JSONError);
+	t.throws(() => {
+		parseJson('asdf');
+	}, {
+		instanceOf: parseJson.JSONError
+	});
 });
