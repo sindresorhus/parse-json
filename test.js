@@ -1,5 +1,5 @@
 import test from 'ava';
-import parseJson from '.';
+import parseJson, {JSONError} from './index.js';
 
 const jsonErrorRegex = /Unexpected token "}".*in foo\.json/;
 
@@ -10,7 +10,7 @@ test('main', t => {
 		parseJson('{\n\t"foo": true,\n}');
 	}, {
 		name: 'JSONError',
-		message: /Unexpected token "}"/
+		message: /Unexpected token "}"/,
 	});
 
 	t.throws(() => {
@@ -20,11 +20,15 @@ test('main', t => {
 			error.fileName = 'foo.json';
 			throw error;
 		}
-	}, jsonErrorRegex);
+	}, {
+		message: jsonErrorRegex,
+	});
 
 	t.throws(() => {
 		parseJson('{\n\t"foo": true,\n}', 'foo.json');
-	}, jsonErrorRegex);
+	}, {
+		message: jsonErrorRegex,
+	});
 
 	t.throws(() => {
 		try {
@@ -33,13 +37,15 @@ test('main', t => {
 			error.fileName = 'foo.json';
 			throw error;
 		}
-	}, jsonErrorRegex);
+	}, {
+		message: jsonErrorRegex,
+	});
 });
 
 test('throws exported error error', t => {
 	t.throws(() => {
 		parseJson('asdf');
 	}, {
-		instanceOf: parseJson.JSONError
+		instanceOf: JSONError,
 	});
 });

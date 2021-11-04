@@ -4,14 +4,14 @@
 
 ## Install
 
-```
-$ npm install parse-json
+```sh
+npm install parse-json
 ```
 
 ## Usage
 
 ```js
-const parseJson = require('parse-json');
+import parseJson from 'parse-json';
 
 const json = '{\n\t"foo": true,\n}';
 
@@ -88,7 +88,7 @@ Prescribes how the value originally produced by parsing is transformed, before b
 
 Type: `string`
 
-Filename displayed in the error message.
+The filename displayed in the error message.
 
 ### parseJson.JSONError
 

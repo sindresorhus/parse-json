@@ -1,15 +1,17 @@
-'use strict';
-const errorEx = require('error-ex');
-const fallback = require('json-parse-even-better-errors');
-const {default: LinesAndColumns} = require('lines-and-columns');
-const {codeFrameColumns} = require('@babel/code-frame');
+import {createRequire} from 'node:module';
+import errorEx from 'error-ex';
+import fallback from 'json-parse-even-better-errors';
+import {codeFrameColumns} from '@babel/code-frame';
 
-const JSONError = errorEx('JSONError', {
+const require = createRequire(import.meta.url);
+const {default: LinesAndColumns} = require('lines-and-columns');
+
+export const JSONError = errorEx('JSONError', {
 	fileName: errorEx.append('in %s'),
-	codeFrame: errorEx.append('\n\n%s\n')
+	codeFrame: errorEx.append('\n\n%s\n'),
 });
 
-const parseJson = (string, reviver, filename) => {
+export default function parseJson(string, reviver, filename) {
 	if (typeof reviver === 'string') {
 		filename = reviver;
 		reviver = null;
@@ -39,7 +41,7 @@ const parseJson = (string, reviver, filename) => {
 			const codeFrame = codeFrameColumns(
 				string,
 				{start: {line: location.line + 1, column: location.column + 1}},
-				{highlightCode: true}
+				{highlightCode: true},
 			);
 
 			jsonError.codeFrame = codeFrame;
@@ -47,8 +49,4 @@ const parseJson = (string, reviver, filename) => {
 
 		throw jsonError;
 	}
-};
-
-parseJson.JSONError = JSONError;
-
-module.exports = parseJson;
+}
