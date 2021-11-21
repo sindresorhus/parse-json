@@ -1,7 +1,7 @@
 import errorEx from 'error-ex';
 import fallback from 'json-parse-even-better-errors';
 import {codeFrameColumns} from '@babel/code-frame';
-import LinesAndColumns from 'lines-and-columns';
+import {LinesAndColumns} from 'lines-and-columns';
 
 export const JSONError = errorEx('JSONError', {
 	fileName: errorEx.append('in %s'),
@@ -31,8 +31,7 @@ export default function parseJson(string, reviver, filename) {
 		}
 
 		if (indexMatch && indexMatch.length > 0) {
-			// eslint-disable-next-line new-cap
-			const lines = new LinesAndColumns.default(string);
+			const lines = new LinesAndColumns(string);
 			const index = Number(indexMatch[1]);
 			const location = lines.locationForIndex(index);
 
