@@ -11,7 +11,7 @@ npm install parse-json
 ## Usage
 
 ```js
-import parseJson from 'parse-json';
+import parseJson, {JSONError} from 'parse-json';
 
 const json = '{\n\t"foo": true,\n}';
 
@@ -51,7 +51,7 @@ JSONError: Unexpected token } in JSON at position 16 while parsing near '{      
 try {
 	parseJson(json);
 } catch (error) {
-	if (error instanceof parseJson.JSONError) {
+	if (error instanceof JSONError) {
 		error.fileName = 'foo.json';
 	}
 
@@ -90,7 +90,7 @@ Type: `string`
 
 The filename displayed in the error message.
 
-### parseJson.JSONError
+### JSONError
 
 Exposed for `instanceof` checking.
 
