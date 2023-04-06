@@ -5,9 +5,9 @@ import parseJson, {type JSONError} from './index.js';
 expectError(parseJson());
 expectError(parseJson({foo: true}));
 expectType<JsonObject>(parseJson('{"foo": true}'));
-expectType<JsonObject>(parseJson('{"foo": true}', 'foo.js'));
+expectType<JsonObject>(parseJson('{"foo": true}', 'foo.json'));
 expectType<JsonObject>(parseJson('{"foo": true}', (key, value) => String(value)));
-expectType<JsonObject>(parseJson('{"foo": true}', (key, value) => String(value), 'foo.js'));
+expectType<JsonObject>(parseJson('{"foo": true}', (key, value) => String(value), 'foo.json'));
 
 expectType<string>((() => {
 	let x: string;
