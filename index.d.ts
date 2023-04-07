@@ -1,6 +1,8 @@
 import type {JsonObject} from 'type-fest';
 
-/** Exposed for `instanceof` checking. */
+/**
+Exposed for `instanceof` checking.
+*/
 export type JSONError = Error & { // eslint-disable-line @typescript-eslint/naming-convention
 	/**
 	The filename displayed in the error message, if any.
