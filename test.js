@@ -53,8 +53,8 @@ test('throws exported error error', t => {
 test('has error frame properties', t => {
 	try {
 		parseJson('{\n\t"foo": true,\n}', 'foo.json');
-	} catch(e) {
-		t.assert(e.codeFrame);
-		t.deepEqual(e.rawCodeFrame, '  1 | {\n  2 | \t\"foo\": true,\n> 3 | }\n    | ^');
+	} catch (error) {
+		t.assert(error.codeFrame);
+		t.true(error.rawCodeFrame === '  1 | {\n  2 | \t"foo": true,\n> 3 | }\n    | ^');
 	}
 });

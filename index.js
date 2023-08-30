@@ -35,13 +35,11 @@ export default function parseJson(string, reviver, filename) {
 			const index = Number(indexMatch[1]);
 			const location = lines.locationForIndex(index);
 
-			const generateCodeFrame = ({highlightCode}) => {
-				return codeFrameColumns(
-					string,
-					{start: {line: location.line + 1, column: location.column + 1}},
-					{highlightCode},
-				);
-			}
+			const generateCodeFrame = ({highlightCode}) => codeFrameColumns(
+				string,
+				{start: {line: location.line + 1, column: location.column + 1}},
+				{highlightCode},
+			);
 
 			jsonError.codeFrame = generateCodeFrame({highlightCode: true});
 			jsonError.rawCodeFrame = generateCodeFrame({highlightCode: false});
