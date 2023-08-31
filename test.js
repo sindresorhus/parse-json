@@ -55,6 +55,6 @@ test('has error frame properties', t => {
 		parseJson('{\n\t"foo": true,\n}', 'foo.json');
 	} catch (error) {
 		t.assert(error.codeFrame);
-		t.true(error.rawCodeFrame === '  1 | {\n  2 | \t"foo": true,\n> 3 | }\n    | ^');
+		t.is(error.rawCodeFrame, '  1 | {\n  2 | \t"foo": true,\n> 3 | }\n    | ^');
 	}
 });
