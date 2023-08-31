@@ -33,6 +33,12 @@ const jsonError: JSONError = {
 		> 3 | }
 			| ^
 	`,
+	rawCodeFrame: `
+		  1 | {
+		  2 |   "foo": true,
+		> 3 | }
+			| ^
+	`,
 };
 
 expectError(jsonError.codeFrame = '');
