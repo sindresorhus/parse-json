@@ -105,3 +105,9 @@ The filename displayed in the error message.
 Type: `string`
 
 The printable section of the JSON which produces the error.
+
+#### rawCodeFrame
+
+Type: `string`
+
+The raw version of `codeFrame` without colors.

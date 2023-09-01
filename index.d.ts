@@ -3,7 +3,7 @@ import type {JsonObject} from 'type-fest';
 /**
 Exposed for `instanceof` checking.
 */
-export type JSONError = Error & { // eslint-disable-line @typescript-eslint/naming-convention
+export class JSONError extends Error { // eslint-disable-line @typescript-eslint/naming-convention
 	/**
 	The filename displayed in the error message, if any.
 	*/
@@ -13,7 +13,12 @@ export type JSONError = Error & { // eslint-disable-line @typescript-eslint/nami
 	The printable section of the JSON which produces the error.
 	*/
 	readonly codeFrame: string;
-};
+
+	/**
+	The raw version of `codeFrame` without colors.
+	*/
+	readonly rawCodeFrame: string;
+}
 
 // Get 'reviver' parameter from JSON.parse()
 type ReviverFn = Parameters<typeof JSON['parse']>['1'];

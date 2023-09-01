@@ -49,3 +49,12 @@ test('throws exported error error', t => {
 		instanceOf: JSONError,
 	});
 });
+
+test('has error frame properties', t => {
+	try {
+		parseJson('{\n\t"foo": true,\n}', 'foo.json');
+	} catch (error) {
+		t.assert(error.codeFrame);
+		t.is(error.rawCodeFrame, '  1 | {\n  2 | \t"foo": true,\n> 3 | }\n    | ^');
+	}
+});
