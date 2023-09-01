@@ -13,8 +13,9 @@ export class JSONError extends Error { // eslint-disable-line @typescript-eslint
 	The printable section of the JSON which produces the error.
 	*/
 	readonly codeFrame: string;
+
 	/**
-	The raw version of codeFrame, without terminal highlight.
+	The raw version of `codeFrame` without colors.
 	*/
 	readonly rawCodeFrame: string;
 }
