@@ -110,4 +110,4 @@ The printable section of the JSON which produces the error.
 
 Type: `string`
 
-The raw version of codeFrame, without terminal highlight.
+The raw version of `codeFrame` without colors.
