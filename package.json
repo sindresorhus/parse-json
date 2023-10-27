@@ -44,6 +44,8 @@
 	"devDependencies": {
 		"ava": "^5.2.0",
 		"nyc": "^15.1.0",
+		"outdent": "^0.8.0",
+		"strip-ansi": "^7.1.0",
 		"tsd": "^0.28.1",
 		"xo": "^0.54.0"
 	}
