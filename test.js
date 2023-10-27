@@ -1,7 +1,7 @@
 import process from 'node:process';
 import test from 'ava';
 import {outdent} from 'outdent';
-import stripAnsi from 'strip-ansi'
+import stripAnsi from 'strip-ansi';
 import parseJson, {JSONError} from './index.js';
 
 const errorMessageRegex = /^v(?:16|18)\./.test(process.version)
@@ -9,9 +9,9 @@ const errorMessageRegex = /^v(?:16|18)\./.test(process.version)
 	: /Expected double-quoted property name in JSON at position 16 while parsing/;
 const errorMessageRegexWithFileName = new RegExp(errorMessageRegex.source + '.*in foo\\.json');
 const INVALID_JSON_STRING = outdent`
-	{
-		"foo": true,
-	}
+  {
+  	"foo": true,
+  }
 `;
 const EXPECTED_CODE_FRAME = `
   1 | {
@@ -71,7 +71,7 @@ test('has error frame properties', t => {
 	try {
 		parseJson(INVALID_JSON_STRING, 'foo.json');
 	} catch (error) {
-		t.is(error.rawCodeFrame, EXPECTED_CODE_FRAME)
-		t.is(stripAnsi(error.codeFrame), EXPECTED_CODE_FRAME)
+		t.is(error.rawCodeFrame, EXPECTED_CODE_FRAME);
+		t.is(stripAnsi(error.codeFrame), EXPECTED_CODE_FRAME);
 	}
 });
