@@ -1,17 +1,30 @@
 import process from 'node:process';
 import test from 'ava';
+import {outdent} from 'outdent';
+import stripAnsi from 'strip-ansi'
 import parseJson, {JSONError} from './index.js';
 
 const errorMessageRegex = /^v(?:16|18)\./.test(process.version)
 	? /Unexpected token "}"/
 	: /Expected double-quoted property name in JSON at position 16 while parsing/;
 const errorMessageRegexWithFileName = new RegExp(errorMessageRegex.source + '.*in foo\\.json');
+const INVALID_JSON_STRING = outdent`
+	{
+		"foo": true,
+	}
+`;
+const EXPECTED_CODE_FRAME = `
+  1 | {
+  2 | 	"foo": true,
+> 3 | }
+    | ^
+`.slice(1, -1);
 
 test('main', t => {
-	t.truthy(parseJson('{"foo": true}'));
+	t.deepEqual(parseJson('{"foo": true}'), {foo: true});
 
 	t.throws(() => {
-		parseJson('{\n\t"foo": true,\n}');
+		parseJson(INVALID_JSON_STRING);
 	}, {
 		name: 'JSONError',
 		message: errorMessageRegex,
@@ -19,7 +32,7 @@ test('main', t => {
 
 	t.throws(() => {
 		try {
-			parseJson('{\n\t"foo": true,\n}');
+			parseJson(INVALID_JSON_STRING);
 		} catch (error) {
 			error.fileName = 'foo.json';
 			throw error;
@@ -29,14 +42,14 @@ test('main', t => {
 	});
 
 	t.throws(() => {
-		parseJson('{\n\t"foo": true,\n}', 'foo.json');
+		parseJson(INVALID_JSON_STRING, 'foo.json');
 	}, {
 		message: errorMessageRegexWithFileName,
 	});
 
 	t.throws(() => {
 		try {
-			parseJson('{\n\t"foo": true,\n}', 'bar.json');
+			parseJson(INVALID_JSON_STRING, 'bar.json');
 		} catch (error) {
 			error.fileName = 'foo.json';
 			throw error;
@@ -56,9 +69,9 @@ test('throws exported error error', t => {
 
 test('has error frame properties', t => {
 	try {
-		parseJson('{\n\t"foo": true,\n}', 'foo.json');
+		parseJson(INVALID_JSON_STRING, 'foo.json');
 	} catch (error) {
-		t.assert(error.codeFrame);
-		t.is(error.rawCodeFrame, '  1 | {\n  2 | \t"foo": true,\n> 3 | }\n    | ^');
+		t.is(error.rawCodeFrame, EXPECTED_CODE_FRAME)
+		t.is(stripAnsi(error.codeFrame), EXPECTED_CODE_FRAME)
 	}
 });
