@@ -3,7 +3,7 @@ import test from 'ava';
 import parseJson, {JSONError} from './index.js';
 
 const errorMessageRegex = (() => {
-	const version = Number(process.version.split('.'));
+	const version = Number(process.versions.node.split('.')[0]);
 
 	if (version < 20) {
 		return /Unexpected token "}"/;
