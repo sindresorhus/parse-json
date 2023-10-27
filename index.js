@@ -11,8 +11,8 @@ export const JSONError = errorEx('JSONError', {
 const generateCodeFrame = (string, location, highlightCode = true) =>
 	codeFrameColumns(string, {start: location}, {highlightCode});
 
-const getErrorLocation = (string, error) => {
-	const match = error.message.match(/in JSON at position (?<index>\d+)(?: \(line (?<line>\d+) column (?<column>\d+)\))? while parsing/);
+const getErrorLocation = (string, message) => {
+	const match = message.match(/in JSON at position (?<index>\d+)(?: \(line (?<line>\d+) column (?<column>\d+)\))? while parsing/);
 
 	if (!match) {
 		return;
@@ -35,28 +35,27 @@ export default function parseJson(string, reviver, filename) {
 		reviver = undefined;
 	}
 
-	let error;
+	let message;
 	try {
 		return JSON.parse(string, reviver);
-	} catch (nativeParseError) {
-		error = nativeParseError;
+	} catch (error) {
+		message = error.message;
 	}
 
 	try {
 		fallback(string, reviver);
-		throw error;
-	} catch (betterError) {
-		error = betterError;
+	} catch (error) {
+		message = error.message;
 	}
 
-	const message = error.message.replace(/\n/g, '');
+	message = message.replace(/\n/g, '');
 	const jsonError = new JSONError(message);
 
 	if (filename) {
 		jsonError.fileName = filename;
 	}
 
-	const location = getErrorLocation(string, error);
+	const location = getErrorLocation(string, message);
 	if (location) {
 		jsonError.codeFrame = generateCodeFrame(string, location);
 		jsonError.rawCodeFrame = generateCodeFrame(string, location, /* highlightCode */ false);
