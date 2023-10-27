@@ -2,7 +2,7 @@ import process from 'node:process';
 import test from 'ava';
 import parseJson, {JSONError} from './index.js';
 
-const errorMessageRegex = /^(16|18)\./.test(process.version)
+const errorMessageRegex = /^v(?:16|18)\./.test(process.version)
 	? /Unexpected token "}"/
 	: /Expected double-quoted property name in JSON at position 16 while parsing/;
 const errorMessageRegexWithFileName = new RegExp(errorMessageRegex.source + '.*in foo\\.json');
