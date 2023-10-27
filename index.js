@@ -32,31 +32,35 @@ const getErrorLocation = (string, error) => {
 export default function parseJson(string, reviver, filename) {
 	if (typeof reviver === 'string') {
 		filename = reviver;
-		reviver = null;
+		reviver = undefined;
+	}
+
+	let error;
+	try {
+		return JSON.parse(string, reviver);
+	} catch (nativeParseError) {
+		error = nativeParseError;
 	}
 
 	try {
-		try {
-			return JSON.parse(string, reviver);
-		} catch (error) {
-			fallback(string, reviver);
-			throw error;
-		}
-	} catch (error) {
-		error.message = error.message.replace(/\n/g, '');
-
-		const jsonError = new JSONError(error);
-
-		if (filename) {
-			jsonError.fileName = filename;
-		}
-
-		const location = getErrorLocation(string, error);
-		if (location) {
-			jsonError.codeFrame = generateCodeFrame(string, location);
-			jsonError.rawCodeFrame = generateCodeFrame(string, location, /* highlightCode */ false);
-		}
-
-		throw jsonError;
+		fallback(string, reviver);
+		throw error;
+	} catch (betterError) {
+		error = betterError;
 	}
+
+	const message = error.message.replace(/\n/g, '');
+	const jsonError = new JSONError(message);
+
+	if (filename) {
+		jsonError.fileName = filename;
+	}
+
+	const location = getErrorLocation(string, error);
+	if (location) {
+		jsonError.codeFrame = generateCodeFrame(string, location);
+		jsonError.rawCodeFrame = generateCodeFrame(string, location, /* highlightCode */ false);
+	}
+
+	throw jsonError;
 }
