@@ -1,7 +1,10 @@
 import test from 'ava';
 import parseJson, {JSONError} from './index.js';
 
-const jsonErrorRegex = /Unexpected token "}".*in foo\.json/;
+const errorMessageRegex = /^(16|18)\./.test(process.version)
+	? /Unexpected token "}"/
+	: /Expected double-quoted property name in JSON at position 16 while parsing/;
+const errorMessageRegexWithFileName = new RegExp(errorMessageRegex.source + '.*in foo\\.json');
 
 test('main', t => {
 	t.truthy(parseJson('{"foo": true}'));
@@ -10,7 +13,7 @@ test('main', t => {
 		parseJson('{\n\t"foo": true,\n}');
 	}, {
 		name: 'JSONError',
-		message: /Unexpected token "}"/,
+		message: errorMessageRegex,
 	});
 
 	t.throws(() => {
@@ -21,13 +24,13 @@ test('main', t => {
 			throw error;
 		}
 	}, {
-		message: jsonErrorRegex,
+		message: errorMessageRegexWithFileName,
 	});
 
 	t.throws(() => {
 		parseJson('{\n\t"foo": true,\n}', 'foo.json');
 	}, {
-		message: jsonErrorRegex,
+		message: errorMessageRegexWithFileName,
 	});
 
 	t.throws(() => {
@@ -38,7 +41,7 @@ test('main', t => {
 			throw error;
 		}
 	}, {
-		message: jsonErrorRegex,
+		message: errorMessageRegexWithFileName,
 	});
 });
 
