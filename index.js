@@ -8,11 +8,8 @@ export const JSONError = errorEx('JSONError', {
 	codeFrame: errorEx.append('\n\n%s\n'),
 });
 
-const generateCodeFrame = (string, location, highlightCode = true) => codeFrameColumns(
-	string,
-	{start: location},
-	{highlightCode},
-);
+const generateCodeFrame = (string, location, highlightCode = true) =>
+	codeFrameColumns(string, {start: location}, {highlightCode});
 
 const getErrorLocation = (string, error) => {
 	const match = error.message.match(/in JSON at position (?<index>\d+)(?: \(line (?<line>\d+) column (?<column>\d+)\))? while parsing/);
