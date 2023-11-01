@@ -3,30 +3,33 @@ import {codeFrameColumns} from '@babel/code-frame';
 import {LinesAndColumns} from 'lines-and-columns';
 
 export class JSONError extends Error {
+	fileName = undefined;
+	codeFrame = undefined;
+	rawCodeFrame = undefined;
+
 	constructor(message) {
 		super(message);
 
-		let _messages = message instanceof Error
+		let _message = message instanceof Error
 			? message.message
 			: message;
-
-		delete this.message;
 
 		Object.defineProperty(this, 'message', {
 			configurable: true,
 			enumerable: false,
 			get() {
-				return `${_messages}${this.fileName ? ` in ${this.fileName}` : ''}${this.codeFrame ? `\n\n${this.codeFrame}\n` : ''}`;
+				return `${_message}${this.fileName ? ` in ${this.fileName}` : ''}${this.codeFrame ? `\n\n${this.codeFrame}\n` : ''}`;
 			},
 			set(value) {
-				_messages = value;
+				_message = value;
 			},
 		});
 
 		this.name = 'JSONError';
-		this.fileName = undefined;
-		this.codeFrame = undefined;
-		this.rawCodeFrame = undefined;
+
+		if (Error.captureStackTrace) {
+			Error.captureStackTrace(this, JSONError);
+		}
 	}
 }
 
