@@ -20,8 +20,8 @@ export class JSONError extends Error { // eslint-disable-line @typescript-eslint
 	readonly rawCodeFrame: string;
 }
 
-// Get 'reviver' parameter from JSON.parse()
-type ReviverFn = Parameters<typeof JSON['parse']>['1'];
+// Get `reviver`` parameter from `JSON.parse()`.
+export type Reviver = Parameters<typeof JSON['parse']>['1'];
 
 /**
 Parse JSON with more helpful errors.
@@ -73,7 +73,7 @@ try {
 //     | ^
 ```
 */
-export default function parseJson(string: string, reviver?: ReviverFn, filename?: string): JsonObject;
+export default function parseJson(string: string, reviver?: Reviver, filename?: string): JsonObject;
 
 /**
 Parse JSON with more helpful errors.

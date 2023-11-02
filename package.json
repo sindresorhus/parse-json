@@ -13,15 +13,14 @@
 	"type": "module",
 	"exports": "./index.js",
 	"engines": {
-		"node": ">=16"
+		"node": ">=18"
 	},
 	"scripts": {
 		"test": "xo && nyc ava && tsd"
 	},
 	"files": [
 		"index.js",
-		"index.d.ts",
-		"vendor"
+		"index.d.ts"
 	],
 	"keywords": [
 		"parse",
@@ -35,17 +34,17 @@
 		"string"
 	],
 	"dependencies": {
-		"@babel/code-frame": "^7.21.4",
+		"@babel/code-frame": "^7.22.13",
+		"index-to-position": "^0.1.0",
 		"json-parse-even-better-errors": "^3.0.0",
-		"lines-and-columns": "^2.0.3",
-		"type-fest": "^3.8.0"
+		"type-fest": "^4.6.0"
 	},
 	"devDependencies": {
-		"ava": "^5.2.0",
+		"ava": "^5.3.1",
 		"nyc": "^15.1.0",
 		"outdent": "^0.8.0",
 		"strip-ansi": "^7.1.0",
-		"tsd": "^0.28.1",
-		"xo": "^0.54.0"
+		"tsd": "^0.29.0",
+		"xo": "^0.56.0"
 	}
 }

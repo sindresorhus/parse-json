@@ -1,6 +1,6 @@
 import fallback from 'json-parse-even-better-errors';
 import {codeFrameColumns} from '@babel/code-frame';
-import {LinesAndColumns} from 'lines-and-columns';
+import indexToPosition from 'index-to-position';
 
 export class JSONError extends Error {
 	fileName;
@@ -43,15 +43,13 @@ const getErrorLocation = (string, message) => {
 		return;
 	}
 
-	let {index, line, column} = match.groups;
+	const {index, line, column} = match.groups;
 
 	if (line && column) {
 		return {line: Number(line), column: Number(column)};
 	}
 
-	({line, column} = new LinesAndColumns(string).locationForIndex(Number(index)));
-
-	return {line: line + 1, column: column + 1};
+	return indexToPosition(string, Number(index), {oneBased: true});
 };
 
 export default function parseJson(string, reviver, filename) {
@@ -73,7 +71,7 @@ export default function parseJson(string, reviver, filename) {
 		message = error.message;
 	}
 
-	message = message.replace(/\n/g, '');
+	message = message.replaceAll('\n', '');
 	const jsonError = new JSONError(message);
 
 	if (filename) {
