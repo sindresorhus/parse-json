@@ -1,12 +1,37 @@
-import errorEx from 'error-ex';
 import fallback from 'json-parse-even-better-errors';
 import {codeFrameColumns} from '@babel/code-frame';
 import {LinesAndColumns} from 'lines-and-columns';
 
-export const JSONError = errorEx('JSONError', {
-	fileName: errorEx.append('in %s'),
-	codeFrame: errorEx.append('\n\n%s\n'),
-});
+export class JSONError extends Error {
+	fileName;
+	codeFrame;
+	rawCodeFrame;
+
+	constructor(message) {
+		super(message);
+
+		let _message = message instanceof Error
+			? message.message
+			: message;
+
+		Object.defineProperty(this, 'message', {
+			configurable: true,
+			enumerable: false,
+			get() {
+				return `${_message}${this.fileName ? ` in ${this.fileName}` : ''}${this.codeFrame ? `\n\n${this.codeFrame}\n` : ''}`;
+			},
+			set(value) {
+				_message = value;
+			},
+		});
+
+		this.name = 'JSONError';
+
+		if (Error.captureStackTrace) {
+			Error.captureStackTrace(this, JSONError);
+		}
+	}
+}
 
 const generateCodeFrame = (string, location, highlightCode = true) =>
 	codeFrameColumns(string, {start: location}, {highlightCode});
