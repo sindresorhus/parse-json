@@ -3,9 +3,9 @@ import {codeFrameColumns} from '@babel/code-frame';
 import {LinesAndColumns} from 'lines-and-columns';
 
 export class JSONError extends Error {
-	fileName = undefined;
-	codeFrame = undefined;
-	rawCodeFrame = undefined;
+	fileName;
+	codeFrame;
+	rawCodeFrame;
 
 	constructor(message) {
 		super(message);
