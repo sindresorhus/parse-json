@@ -106,6 +106,15 @@ test('empty string', t => {
 		t.is(error.message, 'Unexpected end of JSON input while parsing empty string')
 		t.is(error.rawCodeFrame, undefined);
 	}
+
+
+	try {
+		parseJson(' ');
+	} catch (error) {
+		t.true(error instanceof JSONError);
+		t.is(error.message, 'Unexpected end of JSON input')
+		t.is(error.rawCodeFrame, undefined);
+	}
 });
 
 test('Unexpected tokens', t => {
