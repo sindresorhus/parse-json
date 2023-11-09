@@ -85,3 +85,11 @@ test('has error frame properties', t => {
 		t.is(stripAnsi(error.codeFrame), EXPECTED_CODE_FRAME);
 	}
 });
+
+test('allow error location out of bounds', t => {
+	t.throws(() => {
+		parseJson('{');
+	}, {
+		instanceOf: JSONError,
+	});
+});
