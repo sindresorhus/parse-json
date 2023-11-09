@@ -51,6 +51,7 @@ const getErrorLocation = (string, message) => {
 
 	index = Number(index);
 
+	// The error location can be out of bounds.
 	if (index === string.length) {
 		const {line, column} = indexToPosition(string, string.length - 1, {oneBased: true});
 		return {line, column: column + 1};
