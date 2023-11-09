@@ -3,33 +3,28 @@ import {codeFrameColumns} from '@babel/code-frame';
 import indexToPosition from 'index-to-position';
 
 export class JSONError extends Error {
+	name = 'JSONError';
 	fileName;
 	codeFrame;
 	rawCodeFrame;
+	#message;
 
 	constructor(message) {
-		super(message);
+		// We cannot pass message to `super()`, otherwise the message accessor will be overridden.
+		// https://262.ecma-international.org/14.0/#sec-error-message
+		super();
 
-		let _message = message instanceof Error
-			? message.message
-			: message;
+		this.#message = message;
+		Error.captureStackTrace?.(this, JSONError);
+	}
 
-		Object.defineProperty(this, 'message', {
-			configurable: true,
-			enumerable: false,
-			get() {
-				return `${_message}${this.fileName ? ` in ${this.fileName}` : ''}${this.codeFrame ? `\n\n${this.codeFrame}\n` : ''}`;
-			},
-			set(value) {
-				_message = value;
-			},
-		});
+	get message() {
+		const {fileName, codeFrame} = this;
+		return `${this.#message}${fileName ? ` in ${fileName}` : ''}${codeFrame ? `\n\n${codeFrame}\n` : ''}`;
+	}
 
-		this.name = 'JSONError';
-
-		if (Error.captureStackTrace) {
-			Error.captureStackTrace(this, JSONError);
-		}
+	set message(message) {
+		this.#message = message;
 	}
 }
 
