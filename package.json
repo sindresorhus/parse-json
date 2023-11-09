@@ -1,6 +1,6 @@
 {
 	"name": "parse-json",
-	"version": "8.0.0",
+	"version": "8.0.1",
 	"description": "Parse JSON with more helpful errors",
 	"license": "MIT",
 	"repository": "sindresorhus/parse-json",
