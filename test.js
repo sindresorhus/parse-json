@@ -103,30 +103,29 @@ test('empty string', t => {
 		parseJson('');
 	} catch (error) {
 		t.true(error instanceof JSONError);
-		t.is(error.message, 'Unexpected end of JSON input while parsing empty string')
+		t.is(error.message, 'Unexpected end of JSON input while parsing empty string');
 		t.is(error.rawCodeFrame, undefined);
 	}
-
 
 	try {
 		parseJson(' ');
 	} catch (error) {
 		t.true(error instanceof JSONError);
-		t.is(error.message, 'Unexpected end of JSON input')
+		t.is(error.message, 'Unexpected end of JSON input');
 		t.is(error.rawCodeFrame, undefined);
 	}
 });
 
 test('Unexpected tokens', t => {
 	try {
-		parseJson('a')
+		parseJson('a');
 	} catch (error) {
 		t.true(error instanceof JSONError);
 		const firstLine = error.message.split('\n')[0];
 		if (NODE_JS_VERSION === 18) {
-			t.is(firstLine, 'Unexpected token "a"(0x61) in JSON at position 0')
+			t.is(firstLine, 'Unexpected token "a"(0x61) in JSON at position 0');
 		} else {
-			t.is(firstLine, 'Unexpected token "a"(0x61), "a" is not valid JSON')
+			t.is(firstLine, 'Unexpected token "a"(0x61), "a" is not valid JSON');
 		}
 	}
-})
+});
