@@ -8,14 +8,14 @@ const NODE_JS_VERSION = Number(process.versions.node.split('.')[0]);
 
 const errorMessageRegex = (() => {
 	if (NODE_JS_VERSION < 20) {
-		return /Unexpected token "}"/;
+		return /Unexpected token "}"\(0x7D\)/;
 	}
 
 	if (NODE_JS_VERSION < 21) {
-		return /Expected double-quoted property name in JSON at position 16 while parsing/;
+		return /Expected double-quoted property name in JSON at position 16/;
 	}
 
-	return /Expected double-quoted property name in JSON at position 16 \(line 3 column 1\) while parsing/;
+	return /Expected double-quoted property name in JSON at position 16 \(line 3 column 1\)/;
 })();
 const errorMessageRegexWithFileName = new RegExp(errorMessageRegex.source + '.*in foo\\.json');
 const INVALID_JSON_STRING = outdent`
@@ -67,6 +67,14 @@ test('main', t => {
 	}, {
 		message: errorMessageRegexWithFileName,
 	});
+});
+
+test('Unexpected tokens', t => {
+	try {
+		parseJson('a');
+	} catch (error) {
+		t.true(error.message.startsWith('Unexpected token "a"(0x61),'));
+	}
 });
 
 test('throws exported error error', t => {
