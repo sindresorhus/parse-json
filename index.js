@@ -60,6 +60,7 @@ const getErrorLocation = (string, message) => {
 };
 
 const addCodePointToUnexpectedToken = message => message.replace(
+	// TODO[engine:node@>=20]: The token always quoted after Node.js 20
 	/(?<=^Unexpected token )(?<quote>')?(.)\k<quote>/,
 	(_, _quote, token) => `"${token}"(${getCodePoint(token)})`,
 );
