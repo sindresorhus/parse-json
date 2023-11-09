@@ -77,14 +77,14 @@ test('throws exported error error', t => {
 	});
 });
 
-// test('has error frame properties', t => {
-// 	try {
-// 		parseJson(INVALID_JSON_STRING, 'foo.json');
-// 	} catch (error) {
-// 		t.is(error.rawCodeFrame, EXPECTED_CODE_FRAME);
-// 		t.is(stripAnsi(error.codeFrame), EXPECTED_CODE_FRAME);
-// 	}
-// });
+test('has error frame properties', t => {
+	try {
+		parseJson(INVALID_JSON_STRING, 'foo.json');
+	} catch (error) {
+		t.is(error.rawCodeFrame, EXPECTED_CODE_FRAME);
+		t.is(stripAnsi(error.codeFrame), EXPECTED_CODE_FRAME);
+	}
+});
 
 test('allow error location out of bounds', t => {
 	try {
