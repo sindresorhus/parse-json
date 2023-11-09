@@ -82,7 +82,6 @@ export default function parseJson(string, reviver, fileName) {
 		location = getErrorLocation(string, message);
 		message = addCodePointToUnexpectedToken(message);
 	} else {
-		location = {line: 1, column: 1};
 		message += ' while parsing empty string';
 	}
 
