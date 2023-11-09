@@ -11,7 +11,11 @@
 		"url": "https://sindresorhus.com"
 	},
 	"type": "module",
-	"exports": "./index.js",
+	"exports": {
+		"types": "./index.d.ts",
+		"default": "./index.js"
+	},
+	"sideEffects": false,
 	"engines": {
 		"node": ">=18"
 	},
@@ -35,9 +39,9 @@
 	],
 	"dependencies": {
 		"@babel/code-frame": "^7.22.13",
-		"index-to-position": "^0.1.0",
+		"index-to-position": "^0.1.1",
 		"json-parse-even-better-errors": "^3.0.0",
-		"type-fest": "^4.6.0"
+		"type-fest": "^4.7.1"
 	},
 	"devDependencies": {
 		"ava": "^5.3.1",
