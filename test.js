@@ -4,14 +4,14 @@ import {outdent} from 'outdent';
 import stripAnsi from 'strip-ansi';
 import parseJson, {JSONError} from './index.js';
 
-const errorMessageRegex = (() => {
-	const version = Number(process.versions.node.split('.')[0]);
+const NODE_JS_VERSION = Number(process.versions.node.split('.')[0]);
 
-	if (version < 20) {
+const errorMessageRegex = (() => {
+	if (NODE_JS_VERSION < 20) {
 		return /Unexpected token "}"/;
 	}
 
-	if (version < 21) {
+	if (NODE_JS_VERSION < 21) {
 		return /Expected double-quoted property name in JSON at position 16 while parsing/;
 	}
 
@@ -83,5 +83,26 @@ test('has error frame properties', t => {
 	} catch (error) {
 		t.is(error.rawCodeFrame, EXPECTED_CODE_FRAME);
 		t.is(stripAnsi(error.codeFrame), EXPECTED_CODE_FRAME);
+	}
+});
+
+test('allow error location out of bounds', t => {
+	try {
+		parseJson('{');
+	} catch (error) {
+		t.true(error instanceof JSONError);
+		t.is(error.rawCodeFrame, NODE_JS_VERSION === 18 ? undefined : outdent`
+			> 1 | {
+			    |  ^
+		`);
+	}
+});
+
+test('empty string', t => {
+	try {
+		parseJson('');
+	} catch (error) {
+		t.true(error instanceof JSONError);
+		t.is(error.rawCodeFrame, undefined);
 	}
 });
