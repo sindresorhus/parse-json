@@ -10,7 +10,7 @@ export class JSONError extends Error {
 	#message;
 
 	constructor(message) {
-		// We cannot pass message to `super()`, otherwise the message getter and setter will be overridden.
+		// We cannot pass message to `super()`, otherwise the message accessor will be overridden.
 		// https://262.ecma-international.org/14.0/#sec-error-message
 		super();
 
