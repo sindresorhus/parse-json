@@ -43,13 +43,20 @@ const getErrorLocation = (string, message) => {
 		return;
 	}
 
-	const {index, line, column} = match.groups;
+	let {index, line, column} = match.groups;
 
 	if (line && column) {
 		return {line: Number(line), column: Number(column)};
 	}
 
-	return indexToPosition(string, Number(index), {oneBased: true});
+	index = Number(index);
+
+	if (index === string.length) {
+		const {line, column} = indexToPosition(string, string.length - 1, {oneBased: true});
+		return {line, column: column + 1};
+	}
+
+	return indexToPosition(string, index, {oneBased: true});
 };
 
 export default function parseJson(string, reviver, filename) {

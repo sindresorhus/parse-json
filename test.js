@@ -87,9 +87,22 @@ test('has error frame properties', t => {
 });
 
 test('allow error location out of bounds', t => {
-	t.throws(() => {
+	try {
 		parseJson('{');
-	}, {
-		instanceOf: JSONError,
-	});
+	} catch (error) {
+		t.true(error instanceof JSONError);
+		t.is(error.rawCodeFrame, outdent`
+			> 1 | {
+			    |  ^
+		`);
+	}
+});
+
+test('empty string', t => {
+	try {
+		parseJson('');
+	} catch (error) {
+		t.true(error instanceof JSONError);
+		t.is(error.rawCodeFrame, undefined);
+	}
 });
