@@ -123,7 +123,7 @@ test('Unexpected tokens', t => {
 		t.true(error instanceof JSONError);
 		const firstLine = error.message.split('\n')[0];
 		if (NODE_JS_VERSION === 18) {
-			t.is(firstLine, 'Unexpected token "a"(0x61) in JSON at position 0');
+			t.is(firstLine, 'Unexpected token "a"(\\u{61}) in JSON at position 0');
 		} else {
 			t.is(firstLine, 'Unexpected token "a"(\\u{61}), "a" is not valid JSON');
 		}
