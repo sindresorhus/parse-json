@@ -1,10 +1,7 @@
 import {codeFrameColumns} from '@babel/code-frame';
 import indexToPosition from 'index-to-position';
 
-const getCodePoint = character => {
-	const codePoint = character.codePointAt(0).toString(16).toUpperCase();
-	return '0x' + (codePoint.length % 2 ? '0' : '') + codePoint;
-};
+const getCodePoint = character => `\\u{${character.codePointAt(0).toString(16)}}`;
 
 export class JSONError extends Error {
 	name = 'JSONError';

@@ -8,7 +8,7 @@ const NODE_JS_VERSION = Number(process.versions.node.split('.')[0]);
 
 const errorMessageRegex = (() => {
 	if (NODE_JS_VERSION < 20) {
-		return /Unexpected token "}"\(0x7D\)/;
+		return /Unexpected token "}"\(\\u{61\}\)/;
 	}
 
 	if (NODE_JS_VERSION < 21) {
@@ -125,7 +125,7 @@ test('Unexpected tokens', t => {
 		if (NODE_JS_VERSION === 18) {
 			t.is(firstLine, 'Unexpected token "a"(0x61) in JSON at position 0');
 		} else {
-			t.is(firstLine, 'Unexpected token "a"(0x61), "a" is not valid JSON');
+			t.is(firstLine, 'Unexpected token "a"(\\u{61}), "a" is not valid JSON');
 		}
 	}
 });
