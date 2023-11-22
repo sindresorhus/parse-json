@@ -8,7 +8,7 @@ const NODE_JS_VERSION = Number(process.versions.node.split('.')[0]);
 
 const errorMessageRegex = (() => {
 	if (NODE_JS_VERSION < 20) {
-		return /Unexpected token "}"\(\\u{61\}\)/;
+		return /Unexpected token "}"\(\\u{7d}\) in JSON at position 16/;
 	}
 
 	if (NODE_JS_VERSION < 21) {
