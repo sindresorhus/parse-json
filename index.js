@@ -1,6 +1,7 @@
-import fallback from 'json-parse-even-better-errors';
 import {codeFrameColumns} from '@babel/code-frame';
 import indexToPosition from 'index-to-position';
+
+const getCodePoint = character => `\\u{${character.codePointAt(0).toString(16)}}`;
 
 export class JSONError extends Error {
 	name = 'JSONError';
@@ -32,7 +33,7 @@ const generateCodeFrame = (string, location, highlightCode = true) =>
 	codeFrameColumns(string, {start: location}, {highlightCode});
 
 const getErrorLocation = (string, message) => {
-	const match = message.match(/in JSON at position (?<index>\d+)(?: \(line (?<line>\d+) column (?<column>\d+)\))? while parsing/);
+	const match = message.match(/in JSON at position (?<index>\d+)(?: \(line (?<line>\d+) column (?<column>\d+)\))?$/);
 
 	if (!match) {
 		return;
@@ -55,9 +56,15 @@ const getErrorLocation = (string, message) => {
 	return indexToPosition(string, index, {oneBased: true});
 };
 
-export default function parseJson(string, reviver, filename) {
+const addCodePointToUnexpectedToken = message => message.replace(
+	// TODO[engine:node@>=20]: The token always quoted after Node.js 20
+	/(?<=^Unexpected token )(?<quote>')?(.)\k<quote>/,
+	(_, _quote, token) => `"${token}"(${getCodePoint(token)})`,
+);
+
+export default function parseJson(string, reviver, fileName) {
 	if (typeof reviver === 'string') {
-		filename = reviver;
+		fileName = reviver;
 		reviver = undefined;
 	}
 
@@ -68,20 +75,18 @@ export default function parseJson(string, reviver, filename) {
 		message = error.message;
 	}
 
-	try {
-		fallback(string, reviver);
-	} catch (error) {
-		message = error.message;
+	let location;
+	if (string) {
+		location = getErrorLocation(string, message);
+		message = addCodePointToUnexpectedToken(message);
+	} else {
+		message += ' while parsing empty string';
 	}
 
-	message = message.replaceAll('\n', '');
 	const jsonError = new JSONError(message);
 
-	if (filename) {
-		jsonError.fileName = filename;
-	}
+	jsonError.fileName = fileName;
 
-	const location = getErrorLocation(string, message);
 	if (location) {
 		jsonError.codeFrame = generateCodeFrame(string, location);
 		jsonError.rawCodeFrame = generateCodeFrame(string, location, /* highlightCode */ false);

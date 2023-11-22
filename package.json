@@ -39,8 +39,7 @@
 	],
 	"dependencies": {
 		"@babel/code-frame": "^7.22.13",
-		"index-to-position": "^0.1.1",
-		"json-parse-even-better-errors": "^3.0.0",
+		"index-to-position": "^0.1.2",
 		"type-fest": "^4.7.1"
 	},
 	"devDependencies": {
