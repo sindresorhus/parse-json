@@ -1,4 +1,4 @@
-import type {JsonObject} from 'type-fest';
+import type {JsonValue} from 'type-fest';
 
 /**
 Exposed for `instanceof` checking.
@@ -73,7 +73,7 @@ try {
 //     | ^
 ```
 */
-export default function parseJson(string: string, reviver?: Reviver, filename?: string): JsonObject;
+export default function parseJson(string: string, reviver?: Reviver, filename?: string): JsonValue;
 
 /**
 Parse JSON with more helpful errors.
@@ -123,4 +123,4 @@ try {
 //     | ^
 ```
 */
-export default function parseJson(string: string, filename?: string): JsonObject;
+export default function parseJson(string: string, filename?: string): JsonValue;
