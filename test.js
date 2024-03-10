@@ -34,10 +34,10 @@ test('main', t => {
 	t.deepEqual(parseJson('{"foo": true}'), {foo: true});
 	t.deepEqual(parseJson('[{"foo": true}]'), [{foo: true}]);
 
-	t.assert(parseJson('"foo"') === 'foo');
-	t.assert(parseJson('123') === 123);
-	t.assert(parseJson('true') === true);
-	t.assert(parseJson('null') === null);
+	t.is(parseJson('"foo"'), 'foo');
+	t.is(parseJson('123'), 123);
+	t.is(parseJson('true'), true);
+	t.is(parseJson('null'), null);
 
 	t.throws(() => {
 		parseJson(INVALID_JSON_STRING);
