@@ -78,7 +78,7 @@ test('main', t => {
 
 		jsonError.message = 'custom error message';
 		t.true(jsonError.message.startsWith('custom error message in foo.json'));
-		// Still have code from in message.
+		// Still have code frame in message.
 		t.true(stripAnsi(jsonError.message).includes('> 3 | }'));
 	}
 
