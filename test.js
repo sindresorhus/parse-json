@@ -67,6 +67,25 @@ test('main', t => {
 	}, {
 		message: errorMessageRegexWithFileName,
 	});
+
+	{
+		let nativeJsonParseError;
+		try {
+			JSON.parse(INVALID_JSON_STRING);
+		} catch (error) {
+			nativeJsonParseError = error;
+		}
+
+		let jsonError;
+		try {
+			parseJson(INVALID_JSON_STRING);
+		} catch (error) {
+			jsonError = error;
+		}
+
+		t.is(nativeJsonParseError.name, 'SyntaxError');
+		t.deepEqual(nativeJsonParseError, jsonError.cause);
+	}
 });
 
 test('throws exported error error', t => {
