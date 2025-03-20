@@ -69,6 +69,20 @@ test('main', t => {
 	});
 
 	{
+		let jsonError;
+		try {
+			parseJson(INVALID_JSON_STRING, 'foo.json');
+		} catch (error) {
+			jsonError = error;
+		}
+
+		jsonError.message = 'custom error message';
+		t.true(jsonError.message.startsWith('custom error message in foo.json'));
+		// Still have code from in message.
+		t.true(stripAnsi(jsonError.message).includes('> 3 | }'));
+	}
+
+	{
 		let nativeJsonParseError;
 		try {
 			JSON.parse(INVALID_JSON_STRING);
