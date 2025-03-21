@@ -1,13 +1,14 @@
 import {expectType, expectError} from 'tsd';
-import type {JsonObject} from 'type-fest';
+import type {JsonValue} from 'type-fest';
 import parseJson, {type JSONError} from './index.js';
 
 expectError(parseJson());
 expectError(parseJson({foo: true}));
-expectType<JsonObject>(parseJson('{"foo": true}'));
-expectType<JsonObject>(parseJson('{"foo": true}', 'foo.json'));
-expectType<JsonObject>(parseJson('{"foo": true}', (key, value) => String(value)));
-expectType<JsonObject>(parseJson('{"foo": true}', (key, value) => String(value), 'foo.json'));
+expectType<JsonValue>(parseJson('{"foo": true}'));
+expectType<JsonValue>(parseJson('{"foo": true}', 'foo.json'));
+expectType<JsonValue>(parseJson('{"foo": true}', (key, value) => String(value)));
+expectType<JsonValue>(parseJson('{"foo": true}', (key, value) => String(value), 'foo.json'));
+expectType<JsonValue>(parseJson('"foo"'));
 
 expectType<string>((() => {
 	let x: string;
