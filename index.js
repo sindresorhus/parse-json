@@ -6,31 +6,69 @@ const getCodePoint = character => `\\u{${character.codePointAt(0).toString(16)}}
 export class JSONError extends Error {
 	name = 'JSONError';
 	fileName;
-	codeFrame;
-	rawCodeFrame;
+	#input;
+	#jsonParseError;
 	#message;
+	#codeFrame;
+	#rawCodeFrame;
 
-	constructor(message) {
-		// We cannot pass message to `super()`, otherwise the message accessor will be overridden.
-		// https://262.ecma-international.org/14.0/#sec-error-message
-		super();
+	constructor(messageOrOptions) {
+		// JSONError constructor used accept string
+		// TODO[>=9]: Remove this `if` on next major version
+		if (typeof messageOrOptions === 'string') {
+			super();
+			this.#message = messageOrOptions;
+		} else {
+			const {jsonParseError, fileName, input} = messageOrOptions;
+			// We cannot pass message to `super()`, otherwise the message accessor will be overridden.
+			// https://262.ecma-international.org/14.0/#sec-error-message
+			super(undefined, {cause: jsonParseError});
 
-		this.#message = message;
+			this.#input = input;
+			this.#jsonParseError = jsonParseError;
+			this.fileName = fileName;
+		}
+
 		Error.captureStackTrace?.(this, JSONError);
 	}
 
 	get message() {
-		const {fileName, codeFrame} = this;
-		return `${this.#message}${fileName ? ` in ${fileName}` : ''}${codeFrame ? `\n\n${codeFrame}\n` : ''}`;
+		this.#message ??= `${addCodePointToUnexpectedToken(this.#jsonParseError.message)}${this.#input === '' ? ' while parsing empty string' : ''}`;
+
+		const {codeFrame} = this;
+		return `${this.#message}${this.fileName ? ` in ${this.fileName}` : ''}${codeFrame ? `\n\n${codeFrame}\n` : ''}`;
 	}
 
 	set message(message) {
 		this.#message = message;
 	}
-}
 
-const generateCodeFrame = (string, location, highlightCode = true) =>
-	codeFrameColumns(string, {start: location}, {highlightCode});
+	#getCodeFrame(highlightCode) {
+		// TODO[>=9]: Remove this `if` on next major version
+		if (!this.#jsonParseError) {
+			return;
+		}
+
+		const input = this.#input;
+
+		const location = getErrorLocation(input, this.#jsonParseError.message);
+		if (!location) {
+			return;
+		}
+
+		return codeFrameColumns(input, {start: location}, {highlightCode});
+	}
+
+	get codeFrame() {
+		this.#codeFrame ??= this.#getCodeFrame(/* highlightCode */ true);
+		return this.#codeFrame;
+	}
+
+	get rawCodeFrame() {
+		this.#rawCodeFrame ??= this.#getCodeFrame(/* highlightCode */ false);
+		return this.#rawCodeFrame;
+	}
+}
 
 const getErrorLocation = (string, message) => {
 	const match = message.match(/in JSON at position (?<index>\d+)(?: \(line (?<line>\d+) column (?<column>\d+)\))?$/);
@@ -68,29 +106,13 @@ export default function parseJson(string, reviver, fileName) {
 		reviver = undefined;
 	}
 
-	let message;
 	try {
 		return JSON.parse(string, reviver);
 	} catch (error) {
-		message = error.message;
+		throw new JSONError({
+			jsonParseError: error,
+			fileName,
+			input: string,
+		});
 	}
-
-	let location;
-	if (string) {
-		location = getErrorLocation(string, message);
-		message = addCodePointToUnexpectedToken(message);
-	} else {
-		message += ' while parsing empty string';
-	}
-
-	const jsonError = new JSONError(message);
-
-	jsonError.fileName = fileName;
-
-	if (location) {
-		jsonError.codeFrame = generateCodeFrame(string, location);
-		jsonError.rawCodeFrame = generateCodeFrame(string, location, /* highlightCode */ false);
-	}
-
-	throw jsonError;
 }

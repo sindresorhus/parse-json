@@ -40,20 +40,24 @@ import parseJson, {JSONError} from 'parse-json';
 const json = '{\n\t"foo": true,\n}';
 
 parseJson(json);
-// JSONError: Unexpected token } in JSON at position 16 while parsing near '{      "foo": true,}'
-//
+// JSONError: Expected double-quoted property name in JSON at position 16 (line 3 column 1)
+
 //   1 | {
 //   2 |   "foo": true,
 // > 3 | }
 //     | ^
 
 parseJson(json, 'foo.json');
-// JSONError: Unexpected token } in JSON at position 16 while parsing near '{      "foo": true,}' in foo.json
-//
+// JSONError: Expected double-quoted property name in JSON at position 16 (line 3 column 1) in foo.json
+
 //   1 | {
 //   2 |   "foo": true,
 // > 3 | }
 //     | ^
+//   fileName: 'foo.json',
+//   [cause]: SyntaxError: Expected double-quoted property name in JSON at position 16 (line 3 column 1)
+//       at JSON.parse (<anonymous>)
+//       at ...
 
 // You can also add the filename at a later point
 try {
@@ -65,12 +69,17 @@ try {
 
 	throw error;
 }
-// JSONError: Unexpected token } in JSON at position 16 while parsing near '{      "foo": true,}' in foo.json
-//
+// JSONError: Expected double-quoted property name in JSON at position 16 (line 3 column 1) in foo.json
+
 //   1 | {
 //   2 |   "foo": true,
 // > 3 | }
 //     | ^
+
+//   fileName: 'foo.json',
+//   [cause]: SyntaxError: Expected double-quoted property name in JSON at position 16 (line 3 column 1)
+//       at JSON.parse (<anonymous>)
+//       at ...
 ```
 */
 export default function parseJson(string: string, reviver?: Reviver, filename?: string): JsonObject;
@@ -90,20 +99,24 @@ import parseJson, {JSONError} from 'parse-json';
 const json = '{\n\t"foo": true,\n}';
 
 parseJson(json);
-// JSONError: Unexpected token } in JSON at position 16 while parsing near '{      "foo": true,}'
-//
+// JSONError: Expected double-quoted property name in JSON at position 16 (line 3 column 1)
+
 //   1 | {
 //   2 |   "foo": true,
 // > 3 | }
 //     | ^
 
 parseJson(json, 'foo.json');
-// JSONError: Unexpected token } in JSON at position 16 while parsing near '{      "foo": true,}' in foo.json
-//
+// JSONError: Expected double-quoted property name in JSON at position 16 (line 3 column 1) in foo.json
+
 //   1 | {
 //   2 |   "foo": true,
 // > 3 | }
 //     | ^
+//   fileName: 'foo.json',
+//   [cause]: SyntaxError: Expected double-quoted property name in JSON at position 16 (line 3 column 1)
+//       at JSON.parse (<anonymous>)
+//       at ...
 
 // You can also add the filename at a later point
 try {
@@ -115,12 +128,17 @@ try {
 
 	throw error;
 }
-// JSONError: Unexpected token } in JSON at position 16 while parsing near '{      "foo": true,}' in foo.json
-//
+// JSONError: Expected double-quoted property name in JSON at position 16 (line 3 column 1) in foo.json
+
 //   1 | {
 //   2 |   "foo": true,
 // > 3 | }
 //     | ^
+
+//   fileName: 'foo.json',
+//   [cause]: SyntaxError: Expected double-quoted property name in JSON at position 16 (line 3 column 1)
+//       at JSON.parse (<anonymous>)
+//       at ...
 ```
 */
 export default function parseJson(string: string, filename?: string): JsonObject;

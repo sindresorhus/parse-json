@@ -78,8 +78,27 @@ test('main', t => {
 
 		jsonError.message = 'custom error message';
 		t.true(jsonError.message.startsWith('custom error message in foo.json'));
-		// Still have code from in message.
+		// Still have code frame in message.
 		t.true(stripAnsi(jsonError.message).includes('> 3 | }'));
+	}
+
+	{
+		let nativeJsonParseError;
+		try {
+			JSON.parse(INVALID_JSON_STRING);
+		} catch (error) {
+			nativeJsonParseError = error;
+		}
+
+		let jsonError;
+		try {
+			parseJson(INVALID_JSON_STRING);
+		} catch (error) {
+			jsonError = error;
+		}
+
+		t.is(nativeJsonParseError.name, 'SyntaxError');
+		t.deepEqual(nativeJsonParseError, jsonError.cause);
 	}
 });
 
@@ -141,5 +160,26 @@ test('Unexpected tokens', t => {
 		} else {
 			t.is(firstLine, 'Unexpected token "a"(\\u{61}), "a" is not valid JSON');
 		}
+	}
+});
+
+test('JSONError legacy interface', t => {
+	{
+		const error = new JSONError('Error message');
+		t.is(error.message, 'Error message');
+	}
+
+	{
+		const error = new JSONError('Error message');
+		error.message = 'New error message';
+		t.is(error.message, 'New error message');
+	}
+
+	{
+		const error = new JSONError('Error message');
+		error.fileName = 'foo.json';
+		t.is(error.message, 'Error message in foo.json');
+		error.message = 'New error message';
+		t.is(error.message, 'New error message in foo.json');
 	}
 });
