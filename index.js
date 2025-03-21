@@ -12,14 +12,22 @@ export class JSONError extends Error {
 	#codeFrame;
 	#rawCodeFrame;
 
-	constructor({jsonParseError, fileName, input}) {
-		// We cannot pass message to `super()`, otherwise the message accessor will be overridden.
-		// https://262.ecma-international.org/14.0/#sec-error-message
-		super(undefined, {cause: jsonParseError});
+	constructor(messageOrOptions) {
+		// JSONError constructor used accept string
+		// TODO[>=9]: Remove this on next major version
+		if (typeof messageOrOptions === 'string') {
+			super();
+			this.#message = messageOrOptions;
+		} else {
+			const {jsonParseError, fileName, input} = messageOrOptions;
+			// We cannot pass message to `super()`, otherwise the message accessor will be overridden.
+			// https://262.ecma-international.org/14.0/#sec-error-message
+			super(undefined, {cause: jsonParseError});
 
-		this.#input = input;
-		this.#jsonParseError = jsonParseError;
-		this.fileName = fileName;
+			this.#input = input;
+			this.#jsonParseError = jsonParseError;
+			this.fileName = fileName;
+		}
 
 		Error.captureStackTrace?.(this, JSONError);
 	}
@@ -36,6 +44,11 @@ export class JSONError extends Error {
 	}
 
 	#getCodeFrame(highlightCode) {
+		// TODO[>=9]: Remove this on next major version
+		if (!this.#jsonParseError) {
+			return;
+		}
+
 		const input = this.#input;
 
 		const location = getErrorLocation(input, this.#jsonParseError.message);

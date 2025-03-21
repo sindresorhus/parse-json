@@ -162,3 +162,24 @@ test('Unexpected tokens', t => {
 		}
 	}
 });
+
+test('JSONError legacy interface', t => {
+	{
+		const error = new JSONError('Error message');
+		t.is(error.message, 'Error message');
+	}
+
+	{
+		const error = new JSONError('Error message');
+		error.message = 'New error message';
+		t.is(error.message, 'New error message');
+	}
+
+	{
+		const error = new JSONError('Error message');
+		error.fileName = 'foo.json';
+		t.is(error.message, 'Error message in foo.json');
+		error.message = 'New error message';
+		t.is(error.message, 'New error message in foo.json');
+	}
+});
