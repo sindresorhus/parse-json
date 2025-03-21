@@ -14,7 +14,7 @@ export class JSONError extends Error {
 
 	constructor(messageOrOptions) {
 		// JSONError constructor used accept string
-		// TODO[>=9]: Remove this on next major version
+		// TODO[>=9]: Remove this `if` on next major version
 		if (typeof messageOrOptions === 'string') {
 			super();
 			this.#message = messageOrOptions;
@@ -44,7 +44,7 @@ export class JSONError extends Error {
 	}
 
 	#getCodeFrame(highlightCode) {
-		// TODO[>=9]: Remove this on next major version
+		// TODO[>=9]: Remove this `if` on next major version
 		if (!this.#jsonParseError) {
 			return;
 		}
