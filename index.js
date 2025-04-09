@@ -77,7 +77,7 @@ const getErrorLocation = (string, message) => {
 		return;
 	}
 
-	let {index, line, column} = match.groups;
+	const {index, line, column} = match.groups;
 
 	if (line && column) {
 		return {line: Number(line), column: Number(column)};
