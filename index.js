@@ -77,21 +77,13 @@ const getErrorLocation = (string, message) => {
 		return;
 	}
 
-	let {index, line, column} = match.groups;
+	const {index, line, column} = match.groups;
 
 	if (line && column) {
 		return {line: Number(line), column: Number(column)};
 	}
 
-	index = Number(index);
-
-	// The error location can be out of bounds.
-	if (index === string.length) {
-		const {line, column} = indexToPosition(string, string.length - 1, {oneBased: true});
-		return {line, column: column + 1};
-	}
-
-	return indexToPosition(string, index, {oneBased: true});
+	return indexToPosition(string, Number(index), {oneBased: true});
 };
 
 const addCodePointToUnexpectedToken = message => message.replace(
