@@ -80,10 +80,10 @@ const getErrorLocation = (string, message) => {
 	const {index, line, column} = match.groups;
 
 	if (line && column) {
-		return {line: Number(line), column: Number(column)};
+		return {line: Number(line), column: Number(column) - 1};
 	}
 
-	return indexToPosition(string, Number(index), {oneBased: true});
+	return indexToPosition(string, Number(index), {oneBasedLine: true});
 };
 
 const addCodePointToUnexpectedToken = message => message.replace(
